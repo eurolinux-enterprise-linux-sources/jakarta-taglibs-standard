@@ -33,7 +33,7 @@
 
 Name:           jakarta-taglibs-standard
 Version:        1.1.1
-Release:        11.7%{?dist}
+Release:        11.8%{?dist}
 Epoch:          0
 Summary:        An open-source implementation of the JSP Standard Tag Library
 License:        ASL 2.0
@@ -42,10 +42,13 @@ URL:            http://jakarta.apache.org/taglibs/
 Source:         http://archive.apache.org/dist/jakarta/taglibs/standard/source/jakarta-taglibs-standard-1.1.1-src.tar.gz
 Patch0:         jakarta-taglibs-standard-%{version}-build.patch
 Patch1:         CVE-2015-0254.patch
+# https://bugzilla.redhat.com/show_bug.cgi?id=1290856
+Patch2:         jakarta-taglibs-standard-%{version}-schema-location.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
 BuildRequires:  jpackage-utils >= 0:1.5.30
+BuildRequires:  java-1.5.0-gcj-devel
 BuildRequires:  ant
 BuildRequires:  apache-tomcat-apis
 BuildRequires:  xalan-j2 >= 2.6.0
@@ -70,6 +73,9 @@ Javadoc for %{name}.
 %setup -q -n %{name}-%{version}-src
 %patch0 -b .orig
 %patch1 -p1
+pushd standard
+%patch2
+popd
 cat > build.properties <<EOBP
 build.dir=build
 dist.dir=dist
@@ -118,6 +124,10 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Tue Jan 02 2018 Michael Simacek <msimacek@redhat.com> - 0:1.1.1-11.8
+- Fix schemaLocation
+- Resolves: rhbz#1290856
+
 * Fri Aug 21 2015 Michal Srb <msrb@redhat.com> - 0:1.1.1-11.7
 - Gracefully handle parsers without FSP support (e.g. Java 5 GCJ)
 - Resolves: CVE-2015-0254
