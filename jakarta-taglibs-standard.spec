@@ -33,7 +33,7 @@
 
 Name:           jakarta-taglibs-standard
 Version:        1.1.1
-Release:        11.4%{?dist}
+Release:        11.7%{?dist}
 Epoch:          0
 Summary:        An open-source implementation of the JSP Standard Tag Library
 License:        ASL 2.0
@@ -41,6 +41,7 @@ Group:          Development/Libraries/Java
 URL:            http://jakarta.apache.org/taglibs/
 Source:         http://archive.apache.org/dist/jakarta/taglibs/standard/source/jakarta-taglibs-standard-1.1.1-src.tar.gz
 Patch0:         jakarta-taglibs-standard-%{version}-build.patch
+Patch1:         CVE-2015-0254.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildArch:      noarch
@@ -68,6 +69,7 @@ Javadoc for %{name}.
 %prep
 %setup -q -n %{name}-%{version}-src
 %patch0 -b .orig
+%patch1 -p1
 cat > build.properties <<EOBP
 build.dir=build
 dist.dir=dist
@@ -116,6 +118,19 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Aug 21 2015 Michal Srb <msrb@redhat.com> - 0:1.1.1-11.7
+- Gracefully handle parsers without FSP support (e.g. Java 5 GCJ)
+- Resolves: CVE-2015-0254
+
+* Mon Aug 17 2015 Michal Srb <msrb@redhat.com> - 0:1.1.1-11.6
+- Prevent XXE and RCE in JSTL XML tags
+- Apply correction for previous CVE-2015-0254 patch (prevent XXE in <x:transform>)
+- Resolves: CVE-2015-0254
+
+* Wed Jul 29 2015 Michal Srb <msrb@redhat.com> - 0:1.1.1-11.5
+- Prevent XXE and RCE in JSTL XML tags
+- Resolves: CVE-2015-0254
+
 * Tue Feb 9 2010 Alexander Kurtakov <akurtako@redhat.com> 0:1.1.1-11.4
 - Drop gcj_support.
 - Use apache-tomcat-apis instead of tomcat5-*.
