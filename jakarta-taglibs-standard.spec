@@ -33,7 +33,7 @@
 
 Name:           jakarta-taglibs-standard
 Version:        1.1.2
-Release:        10%{?dist}
+Release:        11%{?dist}
 Epoch:          0
 Summary:        An open-source implementation of the JSP Standard Tag Library
 License:        ASL 2.0
@@ -136,6 +136,9 @@ cp -pr standard/dist/standard/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 
 
 %changelog
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 01.1.2-11
+- Mass rebuild 2013-12-27
+
 * Fri Jun 28 2013 Mikolaj Izdebski <mizdebsk@redhat.com> - 0:1.1.2-10
 - Rebuild to regenerate API documentation
 - Resolves: CVE-2013-1571
