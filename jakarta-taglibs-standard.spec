@@ -33,7 +33,7 @@
 
 Name:           jakarta-taglibs-standard
 Version:        1.1.2
-Release:        11%{?dist}
+Release:        14%{?dist}
 Epoch:          0
 Summary:        An open-source implementation of the JSP Standard Tag Library
 License:        ASL 2.0
@@ -50,6 +50,7 @@ Patch2:         %{name}-jdbc-4.1.patch
 # prevent maven/system overflow
 Patch3:         jakarta-taglibs-standard-1.1.2-jstl-pom.patch
 Patch4:         jakarta-taglibs-standard-1.1.2-standard-pom.patch
+Patch5:         CVE-2015-0254.patch
 
 BuildArch:      noarch
 BuildRequires:  jpackage-utils >= 0:1.5.30
@@ -96,6 +97,7 @@ cp -p %{SOURCE1} jstl-1.1.2.pom
 %patch3 -p0
 cp -p %{SOURCE2} standard-1.1.2.pom
 %patch4 -p0
+%patch5 -p1
 
 
 %build
@@ -136,6 +138,25 @@ cp -pr standard/dist/standard/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 
 
 %changelog
+* Mon Aug 31 2015 Scientific Linux Auto Patch Process <SCIENTIFIC-LINUX-DEVEL@LISTSERV.FNAL.GOV>
+- Eliminated rpmbuild "bogus date" error due to inconsistent weekday,
+  by assuming the date is correct and changing the weekday.
+  Wed Jan 22 2004 --> Wed Jan 21 2004 or Thu Jan 22 2004 or Wed Jan 28 2004 or ....
+  Sun Aug 23 2004 --> Sun Aug 22 2004 or Mon Aug 23 2004 or Sun Aug 29 2004 or ....
+
+* Fri Aug 21 2015 Michal Srb <msrb@redhat.com> - 0:1.1.2-14
+- Gracefully handle parsers without FSP support (e.g. Java 5 GCJ)
+- Resolves: CVE-2015-0254
+
+* Mon Aug 17 2015 Michal Srb <msrb@redhat.com> - 0:1.1.2-13
+- Prevent XXE and RCE in JSTL XML tags
+- Apply correction for previous CVE-2015-0254 patch (prevent XXE in <x:transform>)
+- Resolves: CVE-2015-0254
+
+* Wed Jul 29 2015 Michal Srb <msrb@redhat.com> - 0:1.1.2-12
+- Prevent XXE and RCE in JSTL XML tags
+- Resolves: CVE-2015-0254
+
 * Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 01.1.2-11
 - Mass rebuild 2013-12-27
 
@@ -226,7 +247,8 @@ cp -pr standard/dist/standard/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 * Fri Oct 22 2004 Fernando Nasser <fnasser@redhat.com> 0:1.1.1-3jpp
 - Remove hack for 1.3 Java that would break building with an IBM SDK.
 
-* Sun Aug 23 2004 Randy Watler <rwatler at finali.com> - 0:1.1.1-2jpp
+* Mon Aug 23 2004 Randy Watler <rwatler at finali.com> - 0:1.1.1-2jpp
+  Sun Aug 23 2004 --> Sun Aug 22 2004 or Mon Aug 23 2004 or Sun Aug 29 2004 or ....
 - Rebuild with ant-1.6.2
 
 * Tue Jul 27 2004 Kaj J. Niemi <kajtzu@fi.basen.net> 0:1.1.1-1jpp
@@ -235,7 +257,8 @@ cp -pr standard/dist/standard/javadoc/* $RPM_BUILD_ROOT%{_javadocdir}/%{name}
 * Tue Feb 17 2004 Kaj J. Niemi <kajtzu@fi.basen.net> 0:1.1.0-1jpp
 - 1.1.0 final
 
-* Wed Jan 22 2004 David Walluck <david@anti-microsoft.org> 0:1.1.0-0.B1.2jpp
+* Thu Jan 22 2004 David Walluck <david@anti-microsoft.org> 0:1.1.0-0.B1.2jpp
+  Wed Jan 22 2004 --> Wed Jan 21 2004 or Thu Jan 22 2004 or Wed Jan 28 2004 or ....
 - change URL
 - fix description
 
